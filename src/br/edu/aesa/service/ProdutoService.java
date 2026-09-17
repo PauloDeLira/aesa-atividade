@@ -27,6 +27,9 @@ public class ProdutoService {
 
     //Retorna a lista completa de produtos
     public List<Produto> listarTodos(){
+        if (listaDeProdutos.isEmpty()){
+            throw new RuntimeException("Lista de produtos vazia");
+        }
         return this.listaDeProdutos;
     }
 
@@ -56,11 +59,6 @@ public class ProdutoService {
 
         if (listaDeProdutos.isEmpty()){
             throw new RuntimeException("Lista de produtos vazia");
-        }
-
-        if (listaDeProdutos.stream()
-                .noneMatch(p -> p.getId().equals(id))){
-            throw new RuntimeException("Produto não encontrado para deletar.");
         }
 
         Produto produtoExistente = buscarPorId(id);
