@@ -3,7 +3,9 @@ package br.edu.aesa.app;
 import br.edu.aesa.model.Produto;
 import br.edu.aesa.service.ProdutoService;
 
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ProdutoApp {
@@ -11,9 +13,10 @@ public class ProdutoApp {
     public void executar() {
 
         Scanner scanner = new Scanner(System.in);
+        scanner.useLocale(Locale.US);
         ProdutoService produtoService = new ProdutoService();
 
-        int opcao;
+        int opcao = -1;
 
         do {
             System.out.println("\n===== SISTEMA DE PRODUTOS =====");
@@ -25,10 +28,10 @@ public class ProdutoApp {
             System.out.println("[0] Sair");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
-            scanner.nextLine();
-
             try {
+
+                opcao = scanner.nextInt();
+                scanner.nextLine();
 
                 switch (opcao) {
 
@@ -140,6 +143,9 @@ public class ProdutoApp {
                         System.out.println("\nOpção inválida!");
                 }
 
+            } catch (InputMismatchException e) {
+                System.out.println("Erro: entrada inválida! Digite um número.");
+                scanner.nextLine();
             } catch (RuntimeException e) {
                 System.out.println("Erro: " + e.getMessage());
             }

@@ -17,36 +17,7 @@ public class ProdutoService {
     //Salva um produto na lista de produtos
     public void salvar(Produto produto) {
 
-        if (produto == null) {
-            throw new RuntimeException("Produto não pode ser nulo");
-        }
-
-        if (produto.getId() == null ||
-                produto.getNome() == null ||
-                produto.getCategoria() == null ||
-                produto.getPreco() == null ||
-                produto.getQuantidade() == null) {
-
-            throw new RuntimeException("Todos os campos são obrigatórios");
-        }
-
-        if (produto.getNome().trim().isEmpty() ||
-                produto.getCategoria().trim().isEmpty()) {
-
-            throw new RuntimeException("Nome e categoria não podem estar vazios");
-        }
-
-        if (produto.getId() <= 0) {
-            throw new RuntimeException("ID inválido");
-        }
-
-        if (produto.getPreco() < 0) {
-            throw new RuntimeException("Preço inválido");
-        }
-
-        if (produto.getQuantidade() < 0) {
-            throw new RuntimeException("Quantidade inválida");
-        }
+        validar(produto);
 
         if (listaDeProdutos.stream()
                 .anyMatch(p -> p.getId().equals(produto.getId()))) {
@@ -79,6 +50,12 @@ public class ProdutoService {
     //Atualiza um produto
     public void atualizarProduto(Produto produto){
 
+        if (listaDeProdutos.isEmpty()){
+            throw new RuntimeException("Lista de produtos vazia");
+        }
+
+        validar(produto);
+
         Produto produtoExistente = buscarPorId(produto.getId());
 
         produtoExistente.setNome(produto.getNome());
@@ -101,5 +78,39 @@ public class ProdutoService {
         System.out.println("Produto removido com sucesso");
     }
 
+    //Valida os dados de um produto (usado no cadastro e na atualização)
+    private void validar(Produto produto) {
+
+        if (produto == null) {
+            throw new RuntimeException("Produto não pode ser nulo");
+        }
+
+        if (produto.getId() == null ||
+                produto.getNome() == null ||
+                produto.getCategoria() == null ||
+                produto.getPreco() == null ||
+                produto.getQuantidade() == null) {
+
+            throw new RuntimeException("Todos os campos são obrigatórios");
+        }
+
+        if (produto.getNome().trim().isEmpty() ||
+                produto.getCategoria().trim().isEmpty()) {
+
+            throw new RuntimeException("Nome e categoria não podem estar vazios");
+        }
+
+        if (produto.getId() <= 0) {
+            throw new RuntimeException("ID inválido");
+        }
+
+        if (produto.getPreco() < 0) {
+            throw new RuntimeException("Preço inválido");
+        }
+
+        if (produto.getQuantidade() < 0) {
+            throw new RuntimeException("Quantidade inválida");
+        }
+    }
 
 }
